@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Interactive Quiz</title>
+
+<meta name="description" content="Take this interactive quiz and test your knowledge.">
+
+<style>
+
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#f3f4f6;
+line-height:1.6;
+color:#333;
+}
+
+/* HEADER */
+
+header{
+background:#111;
+color:white;
+text-align:center;
+padding:20px 10px;
+}
+
+header h1{
+font-size:28px;
+}
+
+/* MAIN */
+
+main{
+max-width:800px;
+margin:auto;
+padding:20px;
+}
+
+/* QUIZ CARD */
+
+.quiz-container{
+background:white;
+border-radius:12px;
+padding:25px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* QUESTION */
+
+.question{
+font-size:22px;
+margin-bottom:20px;
+}
+
+/* OPTIONS */
+
+.options button{
+width:100%;
+padding:14px;
+margin:8px 0;
+border:none;
+border-radius:8px;
+background:#ececec;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.options button:hover{
+background:#ddd;
+}
+
+/* CORRECT & WRONG */
+
+.options button.correct{
+background:#4CAF50;
+color:white;
+}
+
+.options button.wrong{
+background:#e74c3c;
+color:white;
+}
+
+/* FOOTER */
+
+.quiz-footer{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:20px;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.next-btn{
+padding:12px 20px;
+border:none;
+background:#111;
+color:white;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+.next-btn:hover{
+background:#333;
+}
+
+.progress{
+font-size:14px;
+color:#666;
+}
+
+/* SCORE */
+
+.score-box{
+text-align:center;
+font-size:24px;
+margin-top:20px;
+font-weight:bold;
+}
+
+/* BLOG FOOTER */
+
+footer{
+text-align:center;
+padding:20px;
+font-size:14px;
+color:#777;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* Tablets */
+
+@media(max-width:768px){
+
+header h1{
+font-size:24px;
+}
+
+.question{
+font-size:20px;
+}
+
+.quiz-container{
+padding:20px;
+}
+
+}
+
+/* Mobile */
+
+@media(max-width:480px){
+
+main{
+padding:15px;
+}
+
+header{
+padding:15px;
+}
+
+header h1{
+font-size:22px;
+}
+
+.question{
+font-size:18px;
+}
+
+.options button{
+font-size:15px;
+padding:12px;
+}
+
+.next-btn{
+width:100%;
+}
+
+.quiz-footer{
+flex-direction:column;
+align-items:flex-start;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>Knowledge Quiz</h1>
+<p>Test your knowledge with this quiz</p>
+
+</header>
+
+<main>
+
+<section class="quiz-container">
+
+<article>
+
+<h2 id="question" class="question"></h2>
+
+<div id="options" class="options"></div>
+
+</article>
+
+<div class="quiz-footer">
+
+<span id="progress" class="progress"></span>
+
+<button id="nextBtn" class="next-btn">Next</button>
+
+</div>
+
+<div id="scoreBox" class="score-box"></div>
+
+</section>
+
+</main>
+
+<footer>
+
+<p>© Your Blog Quiz</p>
+
+</footer>
+
+<script>
+
+/* QUIZ QUESTIONS */
+
+const quizData = [
+
+{
+question: "Who built the ark?",
+options: ["Abraham","Noah","Moses"],
+answer: "Noah"
+},
+
+{
+question: "Which planet is called the Red Planet?",
+options: ["Mars","Venus","Jupiter"],
+answer: "Mars"
+},
+
+{
+question: "HTML stands for?",
+options:[
+"Hyper Text Markup Language",
+"Home Tool Markup Language",
+"Hyper Tool Multi Language"
+],
+answer:"Hyper Text Markup Language"
+}
+
+];
+
+
+/* VARIABLES */
+
+let currentQuestion = localStorage.getItem("currentQuestion")
+? Number(localStorage.getItem("currentQuestion"))
+: 0;
+
+let score = localStorage.getItem("quizScore")
+? Number(localStorage.getItem("quizScore"))
+: 0;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const nextBtn = document.getElementById("nextBtn");
+const progressEl = document.getElementById("progress");
+const scoreBox = document.getElementById("scoreBox");
+
+
+/* LOAD QUESTION */
+
+function loadQuestion(){
+
+let q = quizData[currentQuestion];
+
+questionEl.textContent = q.question;
+
+optionsEl.innerHTML = "";
+
+progressEl.textContent =
+`Question ${currentQuestion + 1} of ${quizData.length}`;
+
+q.options.forEach(option => {
+
+let button = document.createElement("button");
+
+button.textContent = option;
+
+button.addEventListener("click", () =>
+selectAnswer(button, option));
+
+optionsEl.appendChild(button);
+
+});
+
+}
+
+
+/* SELECT ANSWER */
+
+function selectAnswer(button, option){
+
+let correct = quizData[currentQuestion].answer;
+
+let buttons = document.querySelectorAll(".options button");
+
+buttons.forEach(btn => btn.disabled = true);
+
+if(option === correct){
+
+button.classList.add("correct");
+
+score++;
+
+localStorage.setItem("quizScore", score);
+
+}
+
+else{
+
+button.classList.add("wrong");
+
+buttons.forEach(btn => {
+
+if(btn.textContent === correct){
+
+btn.classList.add("correct");
+
+}
+
+});
+
+}
+
+}
+
+
+/* NEXT BUTTON */
+
+nextBtn.addEventListener("click", () => {
+
+currentQuestion++;
+
+localStorage.setItem("currentQuestion", currentQuestion);
+
+if(currentQuestion < quizData.length){
+
+loadQuestion();
+
+}
+
+else{
+
+showScore();
+
+}
+
+});
+
+
+/* SHOW SCORE */
+
+function showScore(){
+
+questionEl.style.display = "none";
+
+optionsEl.style.display = "none";
+
+nextBtn.style.display = "none";
+
+progressEl.style.display = "none";
+
+scoreBox.innerHTML =
+`Your Score: ${score} / ${quizData.length}`;
+
+localStorage.removeItem("quizScore");
+localStorage.removeItem("currentQuestion");
+
+}
+
+
+/* START QUIZ */
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
