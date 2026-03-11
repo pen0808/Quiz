@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ultimate Quiz</title>
-
-<meta name="description" content="Take our interactive quiz and compete on the leaderboard.">
+<title>Ultimate Quiz Hub</title>
 
 <style>
-
-/* RESET */
 
 *{
 margin:0;
@@ -22,11 +17,9 @@ font-family:Arial, sans-serif;
 }
 
 body{
-background:#f5f6fa;
+background:#f4f6f8;
 color:#333;
 }
-
-/* HEADER */
 
 header{
 background:#111;
@@ -35,67 +28,81 @@ text-align:center;
 padding:20px;
 }
 
-/* MAIN */
-
 main{
-max-width:800px;
+max-width:1000px;
 margin:auto;
 padding:20px;
 }
 
-/* QUIZ CARD */
-
-.quiz-container{
+.card{
 background:white;
 padding:25px;
 border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* START */
-
-.start-screen{
-text-align:center;
-}
-
-.start-screen input{
-padding:12px;
-width:100%;
-margin:12px 0;
-border:1px solid #ccc;
-border-radius:6px;
-}
-
-.start-btn{
-padding:12px 20px;
-border:none;
-background:#111;
-color:white;
-cursor:pointer;
-border-radius:6px;
-}
-
-/* QUESTION */
-
-.question{
-font-size:22px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
 margin-bottom:20px;
+}
+
+/* CATEGORY GRID */
+
+.categories{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+}
+
+.category{
+background:#eee;
+padding:20px;
+border-radius:8px;
+text-align:center;
+cursor:pointer;
+font-weight:bold;
+}
+
+.category:hover{
+background:#ddd;
+}
+
+/* QUIZ HEADER */
+
+.quiz-header{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+font-weight:bold;
+}
+
+.timer{
+color:#e74c3c;
+}
+
+/* PROGRESS BAR */
+
+.progress-bar{
+height:10px;
+background:#ddd;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:15px;
+}
+
+.progress{
+height:100%;
+width:0%;
+background:#27ae60;
 }
 
 /* OPTIONS */
 
 .options button{
+display:block;
 width:100%;
-padding:14px;
 margin:8px 0;
+padding:12px;
 border:none;
+background:#eee;
 border-radius:6px;
-background:#ececec;
 cursor:pointer;
-}
-
-.options button:hover{
-background:#ddd;
 }
 
 .correct{
@@ -108,19 +115,9 @@ background:#e74c3c !important;
 color:white;
 }
 
-/* FOOTER */
-
-.quiz-footer{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:20px;
-flex-wrap:wrap;
-gap:10px;
-}
-
 .next-btn{
-padding:10px 18px;
+margin-top:10px;
+padding:12px 18px;
 background:#111;
 color:white;
 border:none;
@@ -128,125 +125,89 @@ border-radius:6px;
 cursor:pointer;
 }
 
-/* PROGRESS */
-
-.progress-container{
-height:10px;
-background:#eee;
-border-radius:10px;
-margin-bottom:20px;
-}
-
-.progress-bar{
-height:10px;
-background:#4CAF50;
-width:0%;
-border-radius:10px;
-}
-
-/* TIMER */
-
-.timer{
-font-weight:bold;
-color:#e74c3c;
-margin-bottom:10px;
-}
-
 /* LEADERBOARD */
-
-.leaderboard{
-margin-top:30px;
-}
 
 .leaderboard ul{
 list-style:none;
 }
 
 .leaderboard li{
-padding:6px;
+padding:6px 0;
 border-bottom:1px solid #eee;
 }
 
-/* MOBILE */
-
 @media(max-width:600px){
 
-.question{
-font-size:18px;
-}
-
-.next-btn{
-width:100%;
+.categories{
+grid-template-columns:1fr 1fr;
 }
 
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
-
-<h1>Ultimate Knowledge Quiz</h1>
-<p>Test yourself and reach the leaderboard</p>
-
+<h1>Ultimate Quiz Hub</h1>
+<p>Choose a category and challenge your knowledge</p>
 </header>
 
 <main>
 
-<section class="quiz-container">
+<section id="categorySection" class="card">
 
-<!-- START SCREEN -->
+<h2>Quiz Categories</h2>
 
-<div class="start-screen" id="startScreen">
+<div class="categories">
 
-<h2>Enter Your Name</h2>
-
-<input type="text" id="username" placeholder="Your name">
-
-<button class="start-btn" onclick="startQuiz()">Start Quiz</button>
-
-</div>
-
-<!-- QUIZ -->
-
-<div id="quizArea" style="display:none">
-
-<div class="progress-container">
-<div class="progress-bar" id="progressBar"></div>
-</div>
-
-<div class="timer" id="timer">Time: 15</div>
-
-<h2 class="question" id="question"></h2>
-
-<div class="options" id="options"></div>
-
-<div class="quiz-footer">
-
-<span id="progress"></span>
-
-<button class="next-btn" id="nextBtn">Next</button>
+<div class="category" onclick="startCategory('general')">General Knowledge</div>
+<div class="category" onclick="startCategory('animals')">Animals</div>
+<div class="category" onclick="startCategory('flags')">Country Flags</div>
+<div class="category" onclick="startCategory('science')">Science</div>
+<div class="category" onclick="startCategory('space')">Space</div>
+<div class="category" onclick="startCategory('technology')">Technology</div>
+<div class="category" onclick="startCategory('sports')">Sports</div>
+<div class="category" onclick="startCategory('history')">History</div>
+<div class="category" onclick="startCategory('geography')">Geography</div>
+<div class="category" onclick="startCategory('movies')">Movies</div>
 
 </div>
 
+</section>
+
+<section id="quizSection" class="card" style="display:none">
+
+<div class="progress-bar">
+<div id="progress" class="progress"></div>
 </div>
 
-<!-- SCORE -->
+<div class="quiz-header">
+<span id="questionNumber"></span>
+<span class="timer">Time: <span id="timer">15</span>s</span>
+</div>
 
-<div id="scoreBox" style="text-align:center;margin-top:20px;"></div>
+<h2 id="question"></h2>
 
-<!-- LEADERBOARD -->
+<div id="options" class="options"></div>
 
-<div class="leaderboard">
+<button class="next-btn" onclick="nextQuestion()">Next</button>
 
-<h3>Leaderboard</h3>
+</section>
 
+<section id="scoreSection" class="card" style="display:none">
+
+<h2 id="scoreText"></h2>
+
+<button onclick="restartQuiz()">Play Again</button>
+
+</section>
+
+<section class="card leaderboard">
+
+<h2>Leaderboard</h2>
 <ul id="leaderboardList"></ul>
-
-</div>
 
 </section>
 
@@ -254,319 +215,228 @@ width:100%;
 
 <script>
 
-/* QUESTIONS */
+/* LARGE QUIZ DATABASE */
 
-let quizData = [
+const quizzes = {
 
-{
-question:"Who built the ark?",
-options:["Abraham","Noah","Moses"],
-answer:"Noah"
-},
-
-{
-question:"Which planet is called the Red Planet?",
-options:["Mars","Venus","Jupiter"],
-answer:"Mars"
-},
-
-{
-question:"HTML stands for?",
-options:[
-"Hyper Text Markup Language",
-"Home Tool Markup Language",
-"Hyper Tool Mark Language"
+general:[
+{question:"Capital of France?",options:["Paris","Rome","Madrid"],answer:"Paris"},
+{question:"2+8=?",options:["9","10","11"],answer:"10"},
+{question:"Largest ocean?",options:["Pacific","Atlantic","Indian"],answer:"Pacific"},
+{question:"How many continents?",options:["5","6","7"],answer:"7"},
+{question:"Color of sky?",options:["Blue","Green","Yellow"],answer:"Blue"},
+{question:"H2O is?",options:["Water","Salt","Oxygen"],answer:"Water"},
+{question:"Largest land animal?",options:["Elephant","Horse","Lion"],answer:"Elephant"},
+{question:"Gas we breathe?",options:["Oxygen","Nitrogen","Carbon"],answer:"Oxygen"},
+{question:"Sun is a?",options:["Star","Planet","Moon"],answer:"Star"},
+{question:"How many days in week?",options:["5","6","7"],answer:"7"}
 ],
-answer:"Hyper Text Markup Language"
-},
 
-{
-question:"CSS is used for?",
-options:[
-"Styling webpages",
-"Database",
-"Operating system"
+animals:[
+{question:"King of jungle?",options:["Lion","Tiger","Bear"],answer:"Lion"},
+{question:"Fastest land animal?",options:["Cheetah","Horse","Dog"],answer:"Cheetah"},
+{question:"Largest animal?",options:["Blue Whale","Elephant","Shark"],answer:"Blue Whale"},
+{question:"Bird that can't fly?",options:["Ostrich","Eagle","Parrot"],answer:"Ostrich"},
+{question:"Animal with shell?",options:["Turtle","Dog","Cat"],answer:"Turtle"},
+{question:"Animal that hops?",options:["Kangaroo","Dog","Horse"],answer:"Kangaroo"},
+{question:"Largest cat?",options:["Tiger","Lion","Leopard"],answer:"Tiger"},
+{question:"Animal that barks?",options:["Dog","Cat","Cow"],answer:"Dog"},
+{question:"Striped animal?",options:["Zebra","Horse","Dog"],answer:"Zebra"},
+{question:"Animal with trunk?",options:["Elephant","Lion","Dog"],answer:"Elephant"}
 ],
-answer:"Styling webpages"
-}
 
-];
+flags:[
+{question:"Maple leaf flag?",options:["Canada","USA","UK"],answer:"Canada"},
+{question:"Green white green flag?",options:["Nigeria","Italy","India"],answer:"Nigeria"},
+{question:"Stars and stripes?",options:["USA","France","Brazil"],answer:"USA"},
+{question:"Red circle flag?",options:["Japan","China","Korea"],answer:"Japan"},
+{question:"Union Jack?",options:["UK","USA","Australia"],answer:"UK"},
+{question:"Blue yellow flag?",options:["Sweden","Germany","Italy"],answer:"Sweden"},
+{question:"Cedar tree flag?",options:["Lebanon","Iran","Turkey"],answer:"Lebanon"},
+{question:"Red yellow star?",options:["Vietnam","China","Japan"],answer:"Vietnam"},
+{question:"Green white red vertical?",options:["Italy","Ireland","Mexico"],answer:"Italy"},
+{question:"Flag with map?",options:["Cyprus","France","Spain"],answer:"Cyprus"}
+],
 
-
-/* RANDOMIZE QUESTIONS */
-
-quizData = quizData.sort(()=>Math.random()-0.5);
-
-
-/* LOAD DATA FROM LOCAL STORAGE */
-
-let username = localStorage.getItem("quizUsername") || "";
-
-let currentQuestion =
-Number(localStorage.getItem("quizCurrentQuestion")) || 0;
-
-let score =
-Number(localStorage.getItem("quizScore")) || 0;
-
-
-/* ELEMENTS */
-
-const startScreen = document.getElementById("startScreen");
-const quizArea = document.getElementById("quizArea");
-
-const questionEl = document.getElementById("question");
-const optionsEl = document.getElementById("options");
-
-const progressEl = document.getElementById("progress");
-const nextBtn = document.getElementById("nextBtn");
-
-const progressBar = document.getElementById("progressBar");
-
-const timerEl = document.getElementById("timer");
-
-const scoreBox = document.getElementById("scoreBox");
-
-
-/* AUTO RESUME QUIZ */
-
-if(username !== ""){
-
-startScreen.style.display="none";
-
-quizArea.style.display="block";
-
-loadQuestion();
+science:[
+{question:"Water formula?",options:["H2O","CO2","O2"],answer:"H2O"},
+{question:"Earth revolves around?",options:["Sun","Moon","Mars"],answer:"Sun"},
+{question:"Human blood color?",options:["Red","Blue","Green"],answer:"Red"},
+{question:"Gas plants use?",options:["CO2","Oxygen","Nitrogen"],answer:"CO2"},
+{question:"Unit of force?",options:["Newton","Meter","Volt"],answer:"Newton"},
+{question:"Boiling point water?",options:["100°C","90°C","80°C"],answer:"100°C"},
+{question:"Planet known red?",options:["Mars","Earth","Venus"],answer:"Mars"},
+{question:"Largest organ?",options:["Skin","Heart","Brain"],answer:"Skin"},
+{question:"Energy source Earth?",options:["Sun","Moon","Mars"],answer:"Sun"},
+{question:"Gas for breathing?",options:["Oxygen","Helium","Hydrogen"],answer:"Oxygen"}
+]
 
 }
 
+/* STATE */
 
-/* START QUIZ */
+let currentQuiz=[]
+let category=null
+let currentQuestion=0
+let score=0
+let timer
+let timeLeft=15
 
-function startQuiz(){
+/* START */
 
-username = document.getElementById("username").value;
+function startCategory(cat){
 
-if(username===""){
+category=cat
+currentQuiz=[...quizzes[cat]].sort(()=>Math.random()-0.5)
 
-alert("Please enter your name");
+document.getElementById("categorySection").style.display="none"
+document.getElementById("quizSection").style.display="block"
 
-return;
-
-}
-
-localStorage.setItem("quizUsername",username);
-
-startScreen.style.display="none";
-
-quizArea.style.display="block";
-
-loadQuestion();
+loadQuestion()
 
 }
-
-
-/* TIMER */
-
-let time = 15;
-
-let timer;
-
-function startTimer(){
-
-time = 15;
-
-timerEl.textContent = "Time: "+time;
-
-timer = setInterval(()=>{
-
-time--;
-
-timerEl.textContent = "Time: "+time;
-
-if(time===0){
-
-clearInterval(timer);
-
-nextQuestion();
-
-}
-
-},1000);
-
-}
-
 
 /* LOAD QUESTION */
 
 function loadQuestion(){
 
-clearInterval(timer);
+clearInterval(timer)
 
-startTimer();
+timeLeft=15
+document.getElementById("timer").textContent=timeLeft
 
-let q = quizData[currentQuestion];
+timer=setInterval(()=>{
 
-questionEl.textContent = q.question;
+timeLeft--
+document.getElementById("timer").textContent=timeLeft
 
-optionsEl.innerHTML="";
+if(timeLeft===0){
+clearInterval(timer)
+nextQuestion()
+}
 
-progressEl.textContent =
-`Question ${currentQuestion+1}/${quizData.length}`;
+},1000)
 
-progressBar.style.width =
-((currentQuestion)/quizData.length)*100+"%";
+let q=currentQuiz[currentQuestion]
+
+document.getElementById("question").textContent=q.question
+
+document.getElementById("questionNumber").textContent =
+`Question ${currentQuestion+1}/${currentQuiz.length}`
+
+document.getElementById("progress").style.width =
+((currentQuestion)/currentQuiz.length)*100+"%"
+
+let html=""
 
 q.options.forEach(option=>{
+html+=`<button onclick="selectAnswer(this,'${option}')">${option}</button>`
+})
 
-let btn=document.createElement("button");
-
-btn.textContent=option;
-
-btn.onclick=()=>selectAnswer(btn,option);
-
-optionsEl.appendChild(btn);
-
-});
+document.getElementById("options").innerHTML=html
 
 }
 
+/* ANSWER */
 
-/* SELECT ANSWER */
+function selectAnswer(btn,option){
 
-function selectAnswer(button,option){
+clearInterval(timer)
 
-clearInterval(timer);
+let correct=currentQuiz[currentQuestion].answer
 
-let correct = quizData[currentQuestion].answer;
+let buttons=document.querySelectorAll(".options button")
 
-let buttons=document.querySelectorAll(".options button");
-
-buttons.forEach(btn=>btn.disabled=true);
+buttons.forEach(b=>b.disabled=true)
 
 if(option===correct){
 
-button.classList.add("correct");
+btn.classList.add("correct")
+score++
 
-score++;
+}else{
 
-localStorage.setItem("quizScore",score);
+btn.classList.add("wrong")
 
+buttons.forEach(b=>{
+if(b.textContent===correct){
+b.classList.add("correct")
 }
-
-else{
-
-button.classList.add("wrong");
-
-buttons.forEach(btn=>{
-
-if(btn.textContent===correct){
-
-btn.classList.add("correct");
-
-}
-
-});
+})
 
 }
 
 }
 
-
-/* NEXT QUESTION */
-
-nextBtn.onclick = nextQuestion;
+/* NEXT */
 
 function nextQuestion(){
 
-currentQuestion++;
+currentQuestion++
 
-localStorage.setItem(
-"quizCurrentQuestion",
-currentQuestion
-);
+if(currentQuestion < currentQuiz.length){
 
-if(currentQuestion < quizData.length){
+loadQuestion()
 
-loadQuestion();
+}else{
 
-}
-
-else{
-
-finishQuiz();
+finishQuiz()
 
 }
 
 }
 
-
-/* FINISH QUIZ */
+/* FINISH */
 
 function finishQuiz(){
 
-quizArea.style.display="none";
+document.getElementById("quizSection").style.display="none"
+document.getElementById("scoreSection").style.display="block"
 
-scoreBox.innerHTML =
-`<h2>${username}, your score is ${score}/${quizData.length}</h2>`;
+document.getElementById("scoreText").innerHTML =
+`Your Score: ${score}/${currentQuiz.length}`
 
-
-/* SAVE LEADERBOARD */
-
-let leaderboard =
-JSON.parse(localStorage.getItem("quizLeaderboard")) || [];
-
-leaderboard.push({
-name:username,
-score:score
-});
-
-leaderboard.sort((a,b)=>b.score-a.score);
-
-leaderboard = leaderboard.slice(0,10);
-
-localStorage.setItem(
-"quizLeaderboard",
-JSON.stringify(leaderboard)
-);
-
-
-/* CLEAR QUIZ STORAGE */
-
-localStorage.removeItem("quizScore");
-localStorage.removeItem("quizCurrentQuestion");
-localStorage.removeItem("quizUsername");
-
-loadLeaderboard();
+saveLeaderboard(score)
 
 }
 
+/* LEADERBOARD */
 
-/* LOAD LEADERBOARD */
+function saveLeaderboard(score){
+
+let board=JSON.parse(localStorage.getItem("leaderboard"))||[]
+
+board.push(score)
+
+board.sort((a,b)=>b-a)
+
+board=board.slice(0,5)
+
+localStorage.setItem("leaderboard",JSON.stringify(board))
+
+loadLeaderboard()
+
+}
 
 function loadLeaderboard(){
 
-let leaderboard =
-JSON.parse(localStorage.getItem("quizLeaderboard")) || [];
+let board=JSON.parse(localStorage.getItem("leaderboard"))||[]
 
-let list =
-document.getElementById("leaderboardList");
+let html=""
 
-list.innerHTML="";
+board.forEach((s,i)=>{
+html+=`<li>#${i+1} — ${s} pts</li>`
+})
 
-leaderboard.forEach(player=>{
-
-let li=document.createElement("li");
-
-li.textContent =
-player.name + " - " + player.score;
-
-list.appendChild(li);
-
-});
+document.getElementById("leaderboardList").innerHTML=html
 
 }
 
-loadLeaderboard();
+loadLeaderboard()
+
+function restartQuiz(){
+location.reload()
+}
 
 </script>
 
